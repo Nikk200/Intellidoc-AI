@@ -1,0 +1,80 @@
+{% extends 'authentication_base.html' %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+<div class="row justify-content-center align-items-center">
+    <div class="col-4">
+        <div class="card w-100" style="width: 18rem;">
+            <div class="card-header py-3">Login</div>
+            <div class="card-body">
+                <form id="login_form">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="name@example.com" value="" autofocus>
+                        <label for="floatingInput">Email address</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" class="form-control form-control-sm" id="pass" name="pass" placeholder="Password" value="">
+                        <label for="floatingPassword">Password</label>
+                    </div>
+                
+                    <button type="submit" class="btn btn-outline-primary w-100 mt-3" onclick="login()">
+                        <span role="status" id="login_btn_text">Login</span>
+                        <span class="spinner-border spinner-border-sm login-spinner d-none" aria-hidden="true"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16" id="login_btn_icon">
+                            <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
+                            <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117M11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5M4 1.934V15h6V1.077z"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="d-flex mt-3 justify-content-center">
+                    <span>Don't have an account? <a href="{% url 'users:register' %}">Register</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        
+    });
+
+    function login(){
+        event.preventDefault();
+        const email = $("#email").val();
+        const pass = $("#pass").val();
+
+        if(email == ""){
+            alert("Please enter email or username to login.");
+            return false;
+        } else if(pass == ""){
+            alert("Please enter your password.");
+            return false;
+        }
+        
+        $.ajax({
+            type: "POST",
+            url: "{% url 'users:login' %}",
+            data: $("#login_form").serialize(),
+            beforeSend: function(){
+                $("#login_btn_text").text("Loading");
+                $(".login-spinner").removeClass("d-none");
+                $("#login_btn_icon").addClass("d-none");
+            },
+            success: function(data, status, xhr){
+                window.location.href = "{% url 'users:index' %}";
+            },
+            error: function(xhr, status, error){
+                alert(xhr.responseText);
+            },
+            complete: function(){
+                $("#login_btn_text").text("Login");
+                $(".login-spinner").addClass("d-none");
+                $("#login_btn_icon").removeClass("d-none");
+            }
+        });
+    }
+</script>
+{% endblock scripts %}

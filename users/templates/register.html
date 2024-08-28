@@ -1,0 +1,144 @@
+{% extends 'authentication_base.html' %}
+{% block title %}Registration{% endblock title %}
+{% block content %}
+<div class="row justify-content-center align-items-center">
+    <div class="col-4">
+        <div class="card w-100" style="width: 18rem;">
+            <div class="card-header py-3">Register</div>
+            <div class="card-body">
+                <form id="register_form">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control form-control-sm" id="fname" name="fname" placeholder="First name" value="" autofocus>
+                        <label for="floatingInput">First Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control form-control-sm" id="lname" name="lname" placeholder="First name" value="">
+                        <label for="floatingInput">Last Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="name@example.com" value="">
+                        <label for="floatingInput">Email address</label>
+                    </div>
+                    <div class="form-floating mb-3 position-relative">
+                        <input type="password" class="form-control form-control-sm" id="pass" name="pass" placeholder="Password" value="">
+                        <label for="floatingPassword">Password</label>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye position-absolute" viewBox="0 0 16 16" style="right: 10px;top: 50%;cursor: pointer;" onclick="hideShowPassword(0)">
+                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-slash position-absolute d-none" viewBox="0 0 16 16" style="right: 10px;top: 50%;cursor: pointer;" onclick="hideShowPassword(1)">
+                            <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/>
+                            <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/>
+                            <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
+                        </svg>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" class="form-control form-control-sm" id="cpass" name="cpass" placeholder="Password" value="">
+                        <label for="floatingPassword">Confirm Password</label>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary w-100 mt-3" onclick="register()">
+                        <span role="status" id="register_btn_text">Register</span>
+                        <span class="spinner-border spinner-border-sm register-spinner d-none" aria-hidden="true"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-door-open" viewBox="0 0 16 16" id="register_btn_icon">
+                            <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1"/>
+                            <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117M11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5M4 1.934V15h6V1.077z"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="d-flex mt-3 justify-content-center">
+                    <span>Already have an account? <a href="{% url 'users:login' %}">Login</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block scripts %}
+<script>
+    $(document).ready(function(){
+        
+    });
+
+    function register(){
+        event.preventDefault();
+        const fname = $("#fname").val();
+        const lname = $("#lname").val();
+        const email = $("#email").val();
+        const pass = $("#pass").val();
+        const cpass = $("#cpass").val();
+        var passwordValidator = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        var emailValidator = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+
+        if(fname == ""){
+            alert("Please enter first name.");
+            $("#fname").focus();
+            return false;
+        } else if(lname == ""){
+            alert("Please enter last name.");
+            $("#lname").focus();
+            return false;
+        } else if(email == ""){
+            alert("Please enter email.");
+            $("#email").focus();
+            return false;
+        } else if(!emailValidator.test(email)){
+            alert("Please enter valid email address.");
+            $("#email").focus();
+            return false;
+        } else if(pass == ""){
+            alert("Please enter password.");
+            $("#pass").focus();
+            return false;
+        } else if(!passwordValidator.test(pass)){
+            alert("Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+            $("#pass").focus();
+            return false;
+        } else if(cpass == ""){
+            alert("Please confirm your password.");
+            $("#cpass").focus();
+            return false;
+        } else if(pass != cpass){
+            alert("Password and confirm password does not match.");
+            $("#cpass").focus();
+            return false;
+        }
+         
+        $.ajax({
+            type: "POST",
+            url: "{% url 'users:register' %}",
+            data: $("#register_form").serialize(),
+            beforeSend: function(){
+                $("#register_btn_text").text("Loading");
+                $(".register-spinner").removeClass("d-none");
+                $("#register_btn_icon").addClass("d-none");
+            },
+            success: function(data, status, xhr){
+                alert("Registration Successful");
+                window.location.href = "{% url 'users:login' %}";
+            },
+            error: function(xhr, status, error){
+                alert(xhr.responseText);
+            },
+            complete: function(){
+                $("#register_btn_text").text("Register");
+                $(".register-spinner").addClass("d-none");
+                $("#register_btn_icon").removeClass("d-none");
+            }
+        });
+    }
+
+    function hideShowPassword(val){
+        if(val == 0){
+            $(".bi-eye").addClass("d-none");
+            $(".bi-eye-slash").removeClass("d-none");
+            $("#pass").attr("type", "text");
+        } else if(val == 1){
+            $(".bi-eye").removeClass("d-none");
+            $(".bi-eye-slash").addClass("d-none");
+            $("#pass").attr("type", "password");
+        }
+    }
+</script>
+{% endblock scripts %}

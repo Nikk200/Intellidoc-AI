@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Homepage{% endblock title %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                Intellidoc AI
+            </div>
+            <div class="card-body">
+                <form enctype="multipart/form-data" id="document_form">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">File Upload (PDFs and Images)</label>
+                        <input class="form-control" type="file" id="fileinput" accept="application/pdf, pngimage/png, image/gif, image/jpeg">
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary float-end mt-3 w-50" onclick="uploadDocument()" id="uploadBtn">
+                                <span id="upload_btn_text">Upload</span>
+                                <span class="spinner-border spinner-border-sm d-none" aria-hidden="true" id="spinner"></span>
+                            </button>
+                        </div>
+                        <p id="message_from_server" class="mt-5 text-danger text-center d-none"></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block scripts %}
+<script>
+
+    var task_id = null;
+    $(document).ready(function() {
+        $('#fileinput').on('change', function() {
+            var file = this.files[0];
+            var allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
+            var fileName = file.name.toLowerCase();
+            if (!allowedExtensions.some(function(ext) {
+                return fileName.endsWith(ext);
+            })) {
+                alert('Only PDF and image files are allowed');
+                this.value = '';
+            }
+        });
+
+        setInterval(
+            check_document_analysis_status,
+            1000)
+    });
+
+    function check_document_analysis_status(){
+        if(task_id != null){
+            $.ajax({
+                type: "GET",
+                url: "{% url 'documents:check-result' task_id=0 %}".replace(0, task_id),
+                success: function(data, status, xhr){
+    
+                },
+                error: function(xhr, status, error){
+    
+                }
+            });
+        } else {
+            console.log("Analysis in progress...")
+        }
+    }
+
+
+    function uploadDocument(){
+        const input = document.getElementById('fileinput');
+        if (!input.files[0]) {
+            alert("Please select a file first");
+            return false;
+        }
+        var formData = new FormData();
+        formData.append("file", input.files[0]);
+        formData.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'documents:upload-document' %}",
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function(){
+                $("#spinner").removeClass("d-none");
+                $("#upload_btn_text").text("Uploading document ");
+            },
+            success: function(data, status, xhr){
+                $("#message_from_server").removeClass("d-none").text("Thank you for uploading your document. Our AI is currently processing the file to extract and analyze the information. This may take a few moments. Please stay on this page, and we'll update you once the processing is complete.");
+            },
+            error: function(xhr, status, error){
+                alert(xhr.responseText);
+            },
+            complete: function(){
+                $("#spinner").addClass("d-none");
+                $("#upload_btn_text").text("Upload");
+            }
+        });
+
+    }
+
+</script>
+{% endblock scripts %}
