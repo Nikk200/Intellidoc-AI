@@ -1,98 +1,110 @@
-```markdown
-# IntelliDoc AI Project
+Got it! Here’s the updated README without environment variable instructions:
 
-## Overview
+---
 
-The IntelliDoc AI Project is an Intelligent Document Processing System designed to automate the extraction and processing of text from various document types using OCR and AI technologies. It integrates Django for the backend, Python OCR libraries, and AI models for text analysis, with a MySQL/MariaDB database for storing results.
+# IntelliDoc AI
+
+**IntelliDoc AI** is an Intelligent Document Processing System designed to extract text from documents, process the extracted information using AI models, and store the results in a database. This project is built using Django, Python OCR libraries, and AI technologies, and integrates with MySQL/MariaDB.
 
 ## Features
 
-- **User Management:** Registration, login, and authentication.
-- **Document Upload:** Form-based document upload functionality.
-- **OCR Integration:** Extraction of text from documents using OCR.
-- **AI Processing:** Analysis of extracted text with AI models.
-- **Database Integration:** Storage of extracted and processed information in MySQL/MariaDB.
-- **Asynchronous Processing:** Handling of large documents or heavy AI tasks using Celery.
-- **Frontend Implementation:** User interface for document management and processing status.
+- **User Management**: Registration, login, and profile management.
+- **Document Upload**: Upload documents for processing.
+- **OCR Integration**: Extract text from uploaded documents.
+- **AI Processing**: Analyze extracted text using AI models.
+- **Database Storage**: Store extracted and processed information in MySQL/MariaDB.
+- **Asynchronous Processing**: Handle large documents and heavy tasks using Celery.
+- **Progress Updates**: Notify users about the processing status.
 
 ## Requirements
 
-- **Python 3.8+**
-- **Django 4.0+**
-- **Celery**
-- **Redis** (for Celery result backend)
-- **MySQL/MariaDB**
-- **Python OCR Libraries** (e.g., Tesseract)
-- **AI Libraries** (e.g., Hugging Face Transformers)
+- Python 3.8+
+- Django 4.0+
+- Celery 5.0+
+- Redis (for Celery result backend)
+- MySQL/MariaDB
+- Python OCR libraries (e.g., Tesseract)
+- AI libraries (e.g., Hugging Face Transformers)
 
 ## Installation
 
-1. **Clone the Repository:**
+1. **Clone the Repository**
+
    ```bash
    git clone https://github.com/yourusername/intellidoc-ai.git
    cd intellidoc-ai
    ```
 
-2. **Create a Virtual Environment:**
+2. **Create a Virtual Environment**
+
    ```bash
-   python -m venv env
-   source env/bin/activate  # On Windows use `env\Scripts\activate`
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
    ```
 
-3. **Install Dependencies:**
+3. **Install Dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Set Up the Database:**
-   - Configure your MySQL/MariaDB database settings in `settings.py`.
-   - Run migrations:
-     ```bash
-     python manage.py migrate
-     ```
+4. **Apply Migrations**
 
-5. **Start Redis Server:**
-   - Follow Redis installation instructions for your operating system.
-
-6. **Start Celery Worker:**
    ```bash
-   celery -A project_name worker --loglevel=info
+   python manage.py migrate
    ```
 
-7. **Run the Development Server:**
+5. **Run the Development Server**
+
    ```bash
    python manage.py runserver
    ```
 
+6. **Start Celery Worker**
+
+   In a new terminal window:
+
+   ```bash
+   celery -A intellidoc_ai worker --loglevel=info
+   ```
+
 ## Usage
 
-- **Upload Documents:** Navigate to the upload form on the frontend to submit documents.
-- **Processing Status:** Check the status of document processing through the user interface.
-- **View Results:** Access extracted and AI-processed information via the frontend or database.
+- **Register** a new account or **login** if you already have an account.
+- **Upload** documents for text extraction and AI processing.
+- Monitor the **processing status** through the user interface.
+
+## Testing
+
+To run tests for the project:
+
+```bash
+python manage.py test
+```
 
 ## Contributing
 
+If you'd like to contribute to the project:
+
 1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature/your-feature
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -am 'Add new feature'
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature/your-feature
-   ```
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Commit your changes (`git commit -am 'Add new feature'`).
+4. Push to the branch (`git push origin feature-branch`).
 5. Create a new Pull Request.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contact
+## Acknowledgements
 
-For questions or further information, please contact [your-email@example.com](mailto:your-email@example.com).
-```
-Feel free to adjust the content as needed!
+- **Django**: Web framework for Python.
+- **Celery**: Asynchronous task queue.
+- **Redis**: In-memory data structure store.
+- **MySQL/MariaDB**: Relational database management system.
+- **Tesseract**: OCR engine.
+- **Hugging Face Transformers**: AI models for text processing.
+
+---
+
+Adjust the placeholder `yourusername` as needed.
