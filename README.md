@@ -1,6 +1,3 @@
-Got it! Here’s the updated README without environment variable instructions:
-
----
 
 # IntelliDoc AI
 
@@ -31,7 +28,7 @@ Got it! Here’s the updated README without environment variable instructions:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/intellidoc-ai.git
+   git clone https://github.com/Nikk200/intellidoc-ai.git
    cd intellidoc-ai
    ```
 
@@ -105,6 +102,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Tesseract**: OCR engine.
 - **Hugging Face Transformers**: AI models for text processing.
 
----
 
-Adjust the placeholder `yourusername` as needed.
