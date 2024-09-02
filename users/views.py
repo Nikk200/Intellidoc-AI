@@ -3,10 +3,11 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-
+from documents.task import add_numbers
 
 @login_required
 def index(request):
+    add_numbers.delay(2, 4)
     return render(request, 'index.html')
 
 
@@ -34,7 +35,6 @@ def login_user(request):
         user = authenticate(username=email, password=password)
         if user is not None:
             login(request, user)
-            print("___________________")
             return HttpResponse(status=200)
         else:
             return HttpResponseBadRequest("User does not exist.")

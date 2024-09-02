@@ -53,7 +53,7 @@
         if(task_id != null){
             $.ajax({
                 type: "GET",
-                url: "{% url 'documents:check-result' task_id=0 %}".replace(0, task_id),
+                url: "{% url 'documents:check-document-result' task_id=0 %}".replace(0, task_id),
                 success: function(data, status, xhr){
     
                 },
@@ -88,6 +88,8 @@
                 $("#upload_btn_text").text("Uploading document ");
             },
             success: function(data, status, xhr){
+                alert(data);
+                task_id = data;
                 $("#message_from_server").removeClass("d-none").text("Thank you for uploading your document. Our AI is currently processing the file to extract and analyze the information. This may take a few moments. Please stay on this page, and we'll update you once the processing is complete.");
             },
             error: function(xhr, status, error){

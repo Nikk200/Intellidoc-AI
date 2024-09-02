@@ -17,19 +17,30 @@ def upload_document(request):
             if file.name.lower().endswith(tuple(allowed_extensions)):
                 doc = Document(user=request.user, file=file)
                 doc.save()
-                process_document.delay(doc.id)
-        return HttpResponse("file received")
+                task = process_document.delay(doc.id)
+
+        return HttpResponse(task.id)
     return HttpResponseBadRequest("Method not allowed.")
 
-
+import os
 @login_required
 def documents_list(request):
     documents = Document.objects.filter(user=request.user)
-    return render(request, 'document_list.html', {"documents": documents})
-    
+    docs = list()
+    for doc in documents:
+        docs.append({'doc_id': doc.id, 'doc_name':os.path.basename(doc.file.name), 'uploaded_at': doc.uploaded_at, 'is_processed': doc.processed})
+    return render(request, 'documents.html', {"documents": docs})
+
 
 
 def check_document_result(request, task_id):
-    
-    pass
+    result = AsyncResult(task_id)
+    if result.ready():
+        try:
+            task_result = result.get()
+            return HttpResponse()
+        except Exception as e:
+            return HttpResponseBadRequest("Task error "+e)
+    else:
+        return HttpResponseBadRequest("The task is still running, pending, or is waiting for retry")
 

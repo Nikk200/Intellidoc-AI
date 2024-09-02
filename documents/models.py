@@ -16,7 +16,7 @@ class Document(models.Model):
 
 class ExtractedText(models.Model):
     document = models.OneToOneField(Document, on_delete=models.CASCADE)
-    text = models.TextField()
+    text = models.TextField(null=True)
 
     def __str__(self):
         return f"Extracted text for {self.document.file.name}"
