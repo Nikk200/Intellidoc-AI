@@ -28,7 +28,7 @@ def documents_list(request):
     documents = Document.objects.filter(user=request.user)
     docs = list()
     for doc in documents:
-        docs.append({'doc_id': doc.id, 'doc_name':os.path.basename(doc.file.name), 'uploaded_at': doc.uploaded_at, 'is_processed': doc.processed})
+        docs.append({'doc_id': doc.id, 'doc_name':os.path.basename(doc.file.name), 'doc_type': os.path.basename(doc.file.name).split('.')[1], 'uploaded_at': doc.uploaded_at, 'is_processed': doc.processed})
     return render(request, 'documents.html', {"documents": docs})
 
 
