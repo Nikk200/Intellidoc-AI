@@ -62,7 +62,7 @@ def process_document(self, document_id):
             )
 
             # Update document status to processed
-            document.status = 'processed'
+            document.processed = True
             document.save()
 
         return {'status': 'success', 'message': 'Document processing completed'}

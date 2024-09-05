@@ -7,7 +7,6 @@ class Document(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     file = models.FileField(upload_to='users_documents/')
-    extracted_text = models.TextField(blank=True)  # Store extracted text if needed
     processed = models.BooleanField(default=False)  # Flag to indicate if processed
 
     def __str__(self):
